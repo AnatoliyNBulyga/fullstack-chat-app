@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import GenderCheckbox from "./GenderCheckbox.jsx";
+import {Link} from "react-router-dom";
+import useSignup from "../../hooks/useSignup.jsx";
 
 const SignUp = () => {
     const [inputs, setInputs] = useState({
@@ -10,7 +12,11 @@ const SignUp = () => {
         gender: "",
     });
 
-    // const { loading, signup } = useSignup();
+    console.log('inputs ', inputs)
+
+    const handleInputChange = (event) => setInputs(prev => ({...prev, [event.target.name]: event.target.value}));
+
+    const { loading, signup } = useSignup();
 
     const handleCheckboxChange = (gender) => {
         setInputs({ ...inputs, gender });
@@ -18,7 +24,7 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // await signup(inputs);
+        await signup(inputs);
     };
     return (
         <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -31,48 +37,81 @@ const SignUp = () => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label className="label p-2">
-                            <span className="text-base label-text">
+                            <span className="text-base label-text text-white">
                                 Full Name
                             </span>
                         </label>
-                        <input type="text" placeholder="John Doe" className="w-full input input-bordered h-10"/>
+                        <input
+                            type="text"
+                            placeholder="John Doe"
+                            className="w-full input input-bordered h-10"
+                            name="fullName"
+                            value={inputs.fullName}
+                            onChange={handleInputChange}
+                        />
                     </div>
 
                     <div>
                         <label className="label p-2">
-                            <span className="text-base label-text">
+                            <span className="text-base label-text text-white">
                                 Username
                             </span>
                         </label>
-                        <input type="text" placeholder="Enter username" className="w-full input input-bordered h-10"/>
+                        <input
+                            type="text"
+                            placeholder="Enter username"
+                            className="w-full input input-bordered h-10"
+                            name="username"
+                            value={inputs.username}
+                            onChange={handleInputChange}
+                        />
                     </div>
 
                     <div>
                         <label className="label p-2">
-                            <span className="text-base label-text">
+                            <span className="text-base label-text text-white">
                                 Password
                             </span>
                         </label>
-                        <input type="password" placeholder="Enter password" className="w-full input input-bordered h-10"/>
+                        <input
+                            type="password"
+                            placeholder="Enter password"
+                            className="w-full input input-bordered h-10"
+                            name="password"
+                            value={inputs.password}
+                            onChange={handleInputChange}
+                        />
                     </div>
 
                     <div>
                         <label className="label p-2">
-                            <span className="text-base label-text">
+                            <span className="text-base label-text text-white">
                                 Confirm password
                             </span>
                         </label>
-                        <input type="password" placeholder="Confirm Password" className="w-full input input-bordered h-10"/>
+                        <input
+                            type="password"
+                            placeholder="Confirm Password"
+                            className="w-full input input-bordered h-10"
+                            name="confirmPassword"
+                            value={inputs.confirmPassword}
+                            onChange={handleInputChange}
+                        />
                     </div>
 
                     <GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
 
-                    <a href="#" className="text-sm hover:underline hover:text-blue-600 mt-2 inline-block">
-                        {"Don't"} have an account?
-                    </a>
+                    <Link to="/login" className="text-sm hover:underline text-white hover:text-blue-600 mt-2 inline-block">
+                        Already have an account?
+                    </Link>
 
                     <div>
-                        <button className="btn btn-block btn-sm mt-2">Sign Up</button>
+                        <button
+                            className="btn btn-block btn-sm mt-2"
+                            disabled={loading}
+                        >
+                            { loading ? <span className="loading loading-spinner"></span> : "Sign Up" }
+                        </button>
                     </div>
                 </form>
             </div>
